@@ -1,0 +1,50 @@
+### get all users 
+GET http://localhost:3001/api/v1/users/
+
+### get user by their id 
+
+GET http://localhost:3001/api/v1/users/2
+
+### create a new user 
+
+POST http://localhost:3001/api/v1/users/
+Content-Type: application/json
+
+{
+    "username": "eltsu",
+    "email": "elliriskala@metropolia.fi",
+    "password_hash": "popokissa123"
+}
+
+### log in
+
+POST http://localhost:3001/api/v1/auth/login
+Content-Type: application/json
+
+{
+    "username": "eltsu",
+    "password_hash": "popokissa123"
+}
+
+### update an user
+
+PUT http://localhost:3001/api/v1/users/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6ImVsbGlub29yYSIsImxldmVsX25hbWUiOiJVc2VyIiwiaWF0IjoxNzM4NzY2NTM5fQ.ccekapA3Y4ypzADTQbFNTLk8JzsyLDDd_dSbF77I8wo
+Content-Type: application/json
+
+{
+    "username": "elli200",
+    "email": "mynewemail@gamil.com",
+    "profile_info": "This is my profile",
+    "password_hash": "kissapopo123"
+}
+
+### delete a user
+
+DELETE http://localhost:3001/api/v1/users/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6ImVsbGlub29yYSIsImxldmVsX25hbWUiOiJVc2VyIiwiaWF0IjoxNzM4NzY2NTM5fQ.ccekapA3Y4ypzADTQbFNTLk8JzsyLDDd_dSbF77I8wo
+
+### delete user as an admin 
+
+DELETE http://localhost:3001/api/v1/users/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJ1c2VybmFtZSI6ImVsdHN1IiwibGV2ZWxfbmFtZSI6IlVzZXIiLCJpYXQiOjE3Mzg3Njc2MDN9.YLaP9XhyJp1yxwmq1RRoMpB_mgm1GQr4v0p6NP50DQw
