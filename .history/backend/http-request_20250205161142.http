@@ -1,0 +1,7 @@
+### get all users 
+GET http://localhost:3001/api/v1/users/
+
+### get user by their id 
+
+GET http://localhost:3001/api/v1/users/2
+
