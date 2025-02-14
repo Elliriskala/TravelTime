@@ -2,7 +2,7 @@ import {Link} from 'react-router';
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-gradient-to-b from-darkgreen to-darkergreen bottom-0 px-4  pt-4 pb-15 flex justify-between">
+    <footer className="w-full bg-gradient-to-b from-darkgreen to-darkergreen bottom-0 px-4  pt-4 pb-15 md:p-8 flex justify-between">
       <div>
         <ul>
           <li className="font-bold cursor-pointer">

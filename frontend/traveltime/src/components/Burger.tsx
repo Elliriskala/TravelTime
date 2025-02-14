@@ -6,7 +6,7 @@ interface BurgerProps {
 const Burger = ({open, setOpen}: BurgerProps) => {
   return (
     <>
-      <button
+      <button type="button"
         onClick={() => {
           setOpen(!open);
         }}

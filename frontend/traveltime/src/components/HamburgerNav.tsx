@@ -37,7 +37,7 @@ const HamburgerNav = ({open}: HamburgerNavProps) => {
         </Link>
       </ul>
       <Link to="/login">
-        <button className="mt-15 mb-5 bg-blue rounded-2xl p-1 font-bold text-green shadow-md transition-all duration-300 hover:bg-lightgreen ease-in-out cursor-pointer w-25">
+        <button type='button' className="mt-15 mb-5 bg-blue rounded-2xl p-1 font-bold text-green shadow-md transition-all duration-300 hover:bg-lightgreen ease-in-out cursor-pointer w-25">
           Log out
         </button>
       </Link>

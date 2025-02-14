@@ -8,10 +8,13 @@ const Navbar = () => {
 
   return (
     <div>
-      <nav className="w-full bg-gradient-to-t from-darkgreen to-darkergreen flex list-none m-0 justify-between pt-20 pb-4 px-4">
-        <button className="cursor-pointer">Darkmode</button>
+      <nav className="w-full bg-gradient-to-t from-darkgreen to-darkergreen flex list-none m-0 justify-between pt-18 md:p-8 pb-4 px-4 shadow-xl">
+        <button type='button' className="cursor-pointer">Darkmode</button>
         <Link to="/">
           <div className="font-bold cursor-pointer">TravelTime!</div>
+        </Link>
+        <Link to="/login">
+          <div>Login</div>
         </Link>
         <div>
           <Burger open={open} setOpen={setOpen} />
