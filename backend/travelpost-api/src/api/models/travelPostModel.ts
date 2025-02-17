@@ -62,18 +62,17 @@ const fetchTravelPostByPostId = async (
 };
 
 /**
- * Fetch travel posts based on a filter type and value
- * @param filterType - the type of filter (continent, country, city)
+ * Fetch travel posts based on a filter value
  * @param filterValue - the value of the filter
  * @returns - a list of posts based on the filter
  */
-const fetchPostsByDestination = async (
-  filterType: 'continent' | 'country' | 'city',
+const fetchTravelPostsByDestination = async (
   filterValue: string,
 ): Promise<TravelPost[]> => {
   const [rows] = await promisePool.execute<RowDataPacket[] & TravelPost[]>(
-    `SELECT * FROM TravelPosts WHERE ${filterType} = ?`,
-    [filterValue],
+    `SELECT * FROM TravelPosts
+     WHERE continent LIKE ? OR country LIKE ? OR city LIKE ?`,
+    [`%${filterValue}%`, `%${filterValue}%`, `%${filterValue}%`],
   );
 
   if (rows.length === 0) {
@@ -86,7 +85,9 @@ const fetchPostsByDestination = async (
  * Fetch posts based on tag/category id
  * @returns all the posts connected to the tag_id
  */
-const fetchPostsByTagId = async (tag_id: number): Promise<TravelPost[]> => {
+const fetchTravelPostsByTagId = async (
+  tag_id: number,
+): Promise<TravelPost[]> => {
   const [rows] = await promisePool.execute<RowDataPacket[] & TravelPost[]>(
     `SELECT *
     FROM TravelPosts
@@ -94,6 +95,10 @@ const fetchPostsByTagId = async (tag_id: number): Promise<TravelPost[]> => {
      WHERE PostTags.tag_id = ?`,
     [tag_id],
   );
+
+  if (rows.length === 0) {
+    throw new CustomError(ERROR_MESSAGES.TRAVELPOST.NOT_FOUND, 404);
+  }
   return rows;
 };
 
@@ -117,6 +122,8 @@ const postTravelPost = async (post: TravelPost): Promise<MessageResponse> => {
   } = post;
 
   try {
+    console.log('Inserting post:', post);
+
     const [newPost] = await promisePool.execute<ResultSetHeader>(
       `
       INSERT INTO TravelPosts
@@ -139,8 +146,84 @@ const postTravelPost = async (post: TravelPost): Promise<MessageResponse> => {
       throw new CustomError(ERROR_MESSAGES.TRAVELPOST.NOT_CREATED, 500);
     }
     return {message: 'Travel post added'};
-  } catch {
+  } catch (error) {
+    console.error('Error inserting post:', (error as Error).message);
     throw new CustomError(ERROR_MESSAGES.TRAVELPOST.NOT_CREATED, 500);
+  }
+};
+
+/**
+ * Update a travel post
+ * @param post_id - the post to be updated
+ * @param post - the new post data
+ * @param user_id - the user who wants to update the post
+ * @param user_level - the level of the user (admin can update any post)
+ * @returns - success/error message
+ * @throws - error if the post is not found
+ */
+
+const updateTravelPost = async (
+  post_id: number,
+  post: TravelPost,
+  user_id: number,
+  user_level: UserLevel['level_name'],
+): Promise<MessageResponse> => {
+  const connection = await promisePool.getConnection();
+  await connection.beginTransaction();
+
+  try {
+    const [oldPost] = await connection.execute<RowDataPacket[] & TravelPost[]>(
+      'SELECT * FROM TravelPosts WHERE post_id = ?',
+      [post_id],
+    );
+
+    if (oldPost.length === 0) {
+      throw new CustomError(ERROR_MESSAGES.TRAVELPOST.NOT_FOUND, 404);
+    }
+
+    if (oldPost[0].user_id !== user_id || user_level !== 'Admin') {
+      throw new CustomError(ERROR_MESSAGES.TRAVELPOST.NOT_AUTHORIZED, 403);
+    }
+
+    const {
+      media_url,
+      media_type,
+      continent,
+      country,
+      city,
+      start_date,
+      end_date,
+      description,
+    } = post;
+
+    const [updateResult] = await connection.execute<ResultSetHeader>(
+      `
+      UPDATE TravelPosts
+      SET media_url = ?, media_type = ?, continent = ?, country = ?, city = ?, start_date = ?, end_date = ?, description = ?
+      WHERE post_id = ?`,
+      [
+        media_url,
+        media_type,
+        continent,
+        country,
+        city,
+        start_date,
+        end_date,
+        description,
+        post_id,
+      ],
+    );
+
+    if (updateResult.affectedRows === 0) {
+      throw new CustomError(ERROR_MESSAGES.TRAVELPOST.NOT_UPDATED, 500);
+    }
+
+    await connection.commit();
+
+    return {message: 'Travel post updated'};
+  } catch {
+    await connection.rollback();
+    throw new CustomError(ERROR_MESSAGES.TRAVELPOST.NOT_UPDATED, 500);
   }
 };
 
@@ -195,12 +278,36 @@ const deleteTravelPost = async (
   }
 };
 
+/**
+ * fetch most liked travel posts
+ * @returns - a list of all travel posts based on likes
+ * @throws - error if no posts are found
+ */
+
+const fetchMostLikedTravelPosts = async (): Promise<TravelPost[]> => {
+  const [rows] = await promisePool.execute<RowDataPacket[] & TravelPost[]>(
+    `
+    SELECT TravelPosts.*, COUNT(Likes.post_id) as likes
+    FROM TravelPosts
+    LEFT JOIN Likes ON TravelPosts.post_id = Likes.post_id
+    GROUP BY TravelPosts.post_id
+    ORDER BY likes DESC`,
+  );
+
+  if (rows.length === 0) {
+    throw new CustomError(ERROR_MESSAGES.TRAVELPOST.NOT_FOUND, 404);
+  }
+  return rows;
+};
+
 export {
   fetchAllTravelPosts,
   fetchTravelPostsByUserId,
   fetchTravelPostByPostId,
-  fetchPostsByDestination,
-  fetchPostsByTagId,
+  fetchTravelPostsByDestination,
+  fetchTravelPostsByTagId,
   postTravelPost,
+  updateTravelPost,
   deleteTravelPost,
+  fetchMostLikedTravelPosts,
 };

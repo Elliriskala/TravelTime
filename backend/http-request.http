@@ -76,3 +76,34 @@ Content-Type: application/json
   "follower_id": ,
   "following_id": 
 }
+
+### get all posts
+GET http://localhost:3000/api/v1/posts/
+
+### get post by id
+GET http://localhost:3000/api/v1/posts/2
+
+### get all posts by user id
+GET http://localhost:3000/api/v1/posts/byuser/1
+
+### get posts based on the tag id
+GET http://localhost:3000/api/v1/posts/bytag/7
+
+### get posts based on the destination
+GET http://localhost:3000/api/v1/posts/bydestination/vietnam
+
+### create a new post
+POST http://localhost:3000/api/v1/posts/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6ImVsdHN1IiwibGV2ZWxfbmFtZSI6IlVzZXIiLCJpYXQiOjE3Mzk4MDg5MzN9.9Jjg_Iq3H7JR847f6Ba2LM75FK0i1Y1YH_fGjCk_R6Q
+Content-Type: application/json
+
+{
+  "media_url": "vietnam.jpg",
+  "media_type": "image/jpeg",
+  "continent": "Asia",
+  "country": "Vietnam",
+  "city": "Danang",
+  "start_date": "2021-10-10",
+  "end_date": "2021-10-20",
+  "description": "This is a post from Vietnam"
+}
