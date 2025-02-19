@@ -1,4 +1,6 @@
 import {TravelPost} from 'hybrid-types/DBTypes';
+import {useTravelPosts} from '../hooks/apiHooks';
+import {useEffect} from 'react';
 
 type PostProps = {
   post: Omit<
@@ -17,6 +19,11 @@ type PostProps = {
 
 const PostRow = (props: PostProps) => {
   const {post} = props;
+  const {getPosts} = useTravelPosts();
+
+  useEffect(() => {
+    getPosts();
+  }, []);
 
   return (
     <article className=" bg-lightblue text-darkblue my-4 md:mx-2 shadow-xl">
