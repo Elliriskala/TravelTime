@@ -7,7 +7,7 @@ interface HamburgerNavProps {
 const HamburgerNav = ({open}: HamburgerNavProps) => {
   return (
     <div
-      className={`right-0 w-50 float-right bg-lightblue text-darkgreen text-center rounded-bl-lg rounded-tl-lg shadow-lg transform transition-transform duration-300 ease-in-out ${
+      className={`fixed z-50 right-0 w-50 float-right bg-lightblue text-darkgreen text-center rounded-bl-lg rounded-tl-lg shadow-lg transform transition-transform duration-300 ease-in-out ${
         open ? 'translate-x-0' : 'translate-x-full'
       }`}
     >
@@ -22,9 +22,11 @@ const HamburgerNav = ({open}: HamburgerNavProps) => {
             Notifications
           </li>
         </Link>
-        <li className="p-2 cursor-pointer w-full transition-all duration-300 ease-in-out hover:bg-blue">
-          Your profile
-        </li>
+        <Link to="/profile">
+          <li className="p-2 cursor-pointer w-full transition-all duration-300 ease-in-out hover:bg-blue">
+            Your profile
+          </li>
+        </Link>
         <Link to="/getstarted">
           <li className="p-2 cursor-pointer w-full transition-all duration-300 ease-in-out hover:bg-blue">
             Get started
@@ -37,7 +39,10 @@ const HamburgerNav = ({open}: HamburgerNavProps) => {
         </Link>
       </ul>
       <Link to="/login">
-        <button type='button' className="mt-15 mb-5 bg-blue rounded-2xl p-1 font-bold text-green shadow-md transition-all duration-300 hover:bg-lightgreen ease-in-out cursor-pointer w-25">
+        <button
+          type="button"
+          className="mt-15 mb-5 bg-blue rounded-2xl p-1 font-bold text-green shadow-md transition-all duration-300 hover:bg-lightgreen ease-in-out cursor-pointer w-25"
+        >
           Log out
         </button>
       </Link>

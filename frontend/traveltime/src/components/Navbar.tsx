@@ -1,10 +1,16 @@
-import {Link} from 'react-router';
+import {Link, useLocation} from 'react-router';
 import Burger from './Burger';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import HamburgerNav from './HamburgerNav';
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+
+  // Close the hamburger menu when the location changes
+  useEffect(() => {
+    setOpen(false);
+  }, [location]);
 
   return (
     <div>

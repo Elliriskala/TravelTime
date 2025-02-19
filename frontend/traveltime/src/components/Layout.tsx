@@ -6,10 +6,10 @@ const Layout = () => {
   return (
     <>
       <div>
-        <div>
+        <div className="flex flex-col">
           <Navbar />
         </div>
-        <main>
+        <main className="flex justify-center items-center flex-col mx-4 my-5 lg:mx-20">
           <Outlet />
         </main>
         <Footer />

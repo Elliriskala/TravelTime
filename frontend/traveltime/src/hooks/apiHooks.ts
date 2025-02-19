@@ -1,6 +1,4 @@
-import {
-  UserWithNoPassword,
-} from 'hybrid-types/DBTypes'
+import {UserWithNoPassword, Tag, TravelPost} from 'hybrid-types/DBTypes';
 import {fetchData} from '../lib/functions';
 import {Credentials, RegisterCredentials} from '../types/LocalTypes';
 import {
@@ -8,7 +6,6 @@ import {
   LoginResponse,
   UserResponse,
 } from 'hybrid-types/MessageTypes';
-
 
 const useAuthentication = () => {
   const postLogin = async (credentials: Credentials) => {
@@ -88,4 +85,21 @@ const useUser = () => {
   };
 };
 
-export {useAuthentication, useUser};
+const useTags = () => {
+  const getTags = async () => {
+    return await fetchData<Tag[]>(import.meta.env.VITE_POST_API + '/tags');
+  };
+
+  return {getTags};
+};
+
+const useTravelPosts = () => {
+  const getPosts = async () => {
+    return await fetchData<TravelPost[]>(
+      import.meta.env.VITE_POST_API + '/posts',
+    );
+  };
+  return {getPosts};
+};
+
+export {useAuthentication, useUser, useTags, useTravelPosts};

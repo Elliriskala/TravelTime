@@ -1,6 +1,8 @@
 -- creating database for the project
 
--- source C:/Users/ellir/Hybridisovellukset/TravelTime-personal-assignment/backend/database/create-db.sql
+-- source C:/Users/ellir/Hybridisovellukset/TravelTime-personal-assignment/backend/database/create-db.sql;
+
+
 
 DROP DATABASE IF EXISTS traveltime;
 CREATE DATABASE traveltime;
@@ -39,6 +41,8 @@ CREATE TABLE TravelPosts (
     user_id INT NOT NULL, -- reference to users table
     media_url VARCHAR(255) NOT NULL, -- URL of the media (image or video)
     media_type VARCHAR(50) NOT NULL, -- type of the media, either image or video.
+    thumbnail VARCHAR(255) DEFAULT NULL, -- URL of the thumbnail of the image
+    screenshots VARCHAR(255) DEFAULT NULL, -- URL of the screenshots of the video
     continent VARCHAR(255) NOT NULL,
     country VARCHAR(255) NOT NULL,
     city VARCHAR(255) NOT NULL,
