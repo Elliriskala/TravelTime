@@ -2,12 +2,25 @@ import PostRow from '../components/PostRow';
 import Selector from '../components/Selector';
 import {useEffect, useState} from 'react';
 import {useTags} from '../hooks/apiHooks';
+import {useTravelPosts} from '../hooks/apiHooks';
+import {TravelPost} from 'hybrid-types/DBTypes';
 
 const Mainpage = () => {
   const [destination, setDestination] = useState('');
   const [category, setCategory] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState('Newest');
+  const [posts, setPosts] = useState<TravelPost[]>([]);
+  const {getPosts} = useTravelPosts();
+
+  useEffect(() => {
+    const getAllPosts = async () => {
+      const fetchedPosts = await getPosts();
+      setPosts(fetchedPosts);
+      console.log(fetchedPosts);
+    };
+    getAllPosts();
+  }, []);
 
   const {getTags} = useTags();
 
@@ -23,7 +36,7 @@ const Mainpage = () => {
     <>
       <div
         className="
-      p-2 bg-blue rounded-lg text-darkblue flex items-center w-90 sm:justify-between m-auto mx-1 my-2 shadow-lg sm:w-full md:w-200 lg:max-w-250 sm:flex-row flex-col "
+      p-2 bg-blue rounded-lg text-darkblue flex items-center w-80 sm:justify-between m-auto mx-1 my-3 shadow-lg sm:w-full md:w-180 lg:max-w-250 sm:flex-row flex-col "
       >
         <Selector
           options={tags}
@@ -36,8 +49,8 @@ const Mainpage = () => {
           options={tags}
           selected={category}
           setSelected={setCategory}
-          placeholder="Select a category"
-          searchPlaceholder="search categories"
+          placeholder="Select a tag"
+          searchPlaceholder="search tags"
         />
         <Selector
           options={['Newest', 'Oldest', 'Most popular']}
@@ -48,17 +61,10 @@ const Mainpage = () => {
           hideSearch={true}
         />
       </div>
-      <section className="grid grid-cols-2 gap-2 m-auto md:grid-cols-3 lg:grid-cols-4 lg:mt-8">
-        <PostRow
-          post={{
-            post_id: 1,
-            city: 'Hanoi',
-            country: 'Vietnam',
-            media_url: '',
-            thumbnail: '',
-            screenshots: [],
-          }}
-        />
+      <section className="grid grid-cols-2 gap-2 m-auto md:grid-cols-3 lg:grid-cols-4 mt-6">
+        {posts.map((post) => (
+          <PostRow key={post.post_id} post={post} />
+        ))}
       </section>
     </>
   );

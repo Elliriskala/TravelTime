@@ -9,6 +9,7 @@ interface SelectorProps {
   placeholder: string;
   searchPlaceholder: string;
   hideSearch?: boolean;
+  customStyles?: string;
 }
 
 const Selector = ({
@@ -18,15 +19,16 @@ const Selector = ({
   placeholder,
   searchPlaceholder,
   hideSearch = false,
+  customStyles = '',
 }: SelectorProps) => {
   const [input, setInput] = useState('');
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="relative h-10 w-85 sm:w-60 m-1">
+    <div className={`relative h-10 w-75 sm:w-60 m-1 ${customStyles}`}>
       <div
         onClick={() => setOpen(!open)}
-        className="bg-offwhite w-full p-2 flex items-center justify-between rounded-lg cursor-pointer"
+        className="bg-offwhite w-full p-2 flex items-center justify-between rounded-lg cursor-pointer "
       >
         {selected ? selected : placeholder}
         {open ? <BiChevronUp size={20} /> : <BiChevronDown size={20} />}
