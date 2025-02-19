@@ -14,7 +14,6 @@ const UserProvider = ({children}: {children: React.ReactNode}) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-
   // login, logout and autologin functions are here instead of components
   const handleLogin = async (credentials: Credentials) => {
     try {

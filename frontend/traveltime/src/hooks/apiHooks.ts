@@ -1,5 +1,5 @@
 import {
-  UserWithNoPassword,
+  UserWithNoPassword, Tag
 } from 'hybrid-types/DBTypes'
 import {fetchData} from '../lib/functions';
 import {Credentials, RegisterCredentials} from '../types/LocalTypes';
@@ -88,4 +88,14 @@ const useUser = () => {
   };
 };
 
-export {useAuthentication, useUser};
+// fetch all tags
+
+const useTags = () => {
+  const getTags = async () => {
+    return await fetchData<Tag[]>(import.meta.env.VITE_POST_API + '/tags');
+  };
+
+  return {getTags};
+};
+
+export {useAuthentication, useUser, useTags};

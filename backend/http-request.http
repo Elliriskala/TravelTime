@@ -76,3 +76,13 @@ Content-Type: application/json
   "follower_id": ,
   "following_id": 
 }
+
+### get all posts
+GET http://localhost:3000/api/v1/posts
+
+### get all tags
+GET http://localhost:3000/api/v1/tags
+
+### get all destinations
+
+GET http://localhost:3000/api/v1/destinations
